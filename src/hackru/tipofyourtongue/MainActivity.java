@@ -2,8 +2,6 @@ package hackru.tipofyourtongue;
 
 import java.util.List;
 
-import me.pills.R;
-
 import com.google.android.glass.app.Card;
 import com.google.android.glass.timeline.TimelineManager;
 

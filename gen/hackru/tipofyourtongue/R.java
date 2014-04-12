@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package me.pills;
+package hackru.tipofyourtongue;
 
 public final class R {
     public static final class attr {
