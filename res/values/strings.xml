@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Pills</string>
-    <string name="glass_voice_trigger">peels here</string>
+    <string name="app_name">Tip of Your Tongue</string>
+    <string name="glass_voice_trigger">It\'s on the tip of my tongue</string>
 
 </resources>

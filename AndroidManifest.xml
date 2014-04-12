@@ -14,7 +14,7 @@
         android:label="@string/app_name" >
         
         <activity
-            android:name="me.pills.MainActivity"
+            android:name="hackru.tipofyourtongue.MainActivity"
             android:label="@string/app_name"
             android:enabled="true" >
             
@@ -24,7 +24,7 @@
             
             <meta-data
                 android:name="com.google.android.glass.VoiceTrigger"
-                android:resource="@xml/pills_voice_trigger" />
+                android:resource="@xml/voice_trigger" />
             
         </activity>
         
