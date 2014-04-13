@@ -116,6 +116,7 @@ public class MainActivity extends Activity {
 				}
 			} catch (Exception e) {
 				Log.e("TipOfYourTongue", e.getMessage());
+				Log.e("TipOfYourTongue", e.getStackTrace().toString());
 			}
 			
 			return words;
@@ -128,7 +129,7 @@ public class MainActivity extends Activity {
 				for(Entry<String, String> entry : result.entrySet()) {
 					Card card = new Card(context);
 					card.setText(entry.getKey());
-					card.setFootnote(entry.getValue().replaceAll("<strong>", "").replaceAll("</strong>", ""));
+					card.setFootnote(entry.getValue().replaceAll("<strong>", "").replaceAll("/strong>", ": "));
 					
 					cards.add(card);
 					cardScrollAdapter.notifyDataSetChanged();
