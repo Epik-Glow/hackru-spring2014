@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 
 		cards = new ArrayList<Card>();
 		cardScrollAdapter = new CardScrollViewAdapter();
-		cardScrollView = (CardScrollView) findViewById(R.id.card_scroll_view);
+		cardScrollView = new CardScrollView(this);
 		cardScrollView.setAdapter(cardScrollAdapter);
 		cardScrollView.activate();
 
