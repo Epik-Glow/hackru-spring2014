@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			// Sets the card text
-			card.setText(result);	// Only gets first result; implement scrolling cards later
+			card.setText(result);
 			setContentView(card.toView());
 		}
 		
