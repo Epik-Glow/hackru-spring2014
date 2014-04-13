@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
 			List<String> results = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			String spokenText = results.get(0);
+			spokenText = spokenText.replaceAll("\\s+","%20");
 			new ReverseDictionaryTask().execute(spokenText);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -59,7 +60,7 @@ public class MainActivity extends Activity {
 			String result = "Didn't work";
 			JSONObject json;
 			try {
-				json = readJsonFromUrl("http://api.wordnik.com:80/v4/words.json/reverseDictionary?query=hard%20to%20find&minCorpusCount=5&maxCorpusCount=-1&minLength=1&maxLength=-1&includeTags=false&skip=0&limit=10&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5");
+				json = readJsonFromUrl("http://api.wordnik.com:80/v4/words.json/reverseDictionary?query="+input[0]+"&minCorpusCount=5&maxCorpusCount=-1&minLength=1&maxLength=-1&includeTags=false&skip=0&limit=10&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5");
 				result = json.toString();
 			} catch (Exception e) {
 				Log.e("TipOfYourTongue", e.getMessage());
