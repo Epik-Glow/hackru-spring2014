@@ -57,16 +57,22 @@ public class MainActivity extends Activity {
 
 		@Override
 		protected String doInBackground(String... input) {
-			String result = "Didn't work";
+			String result = "";
+			String words = "";
 			JSONObject json;
 			try {
 				json = readJsonFromUrl("http://api.wordnik.com:80/v4/words.json/reverseDictionary?query="+input[0]+"&minCorpusCount=5&maxCorpusCount=-1&minLength=1&maxLength=-1&includeTags=false&skip=0&limit=10&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5");
-				result = json.getJSONArray("results").getJSONObject(0).getString("word");
+				
+				int numOfResults = json.getInt("totalResults");
+				words = "";
+				for (int i = 0; i < numOfResults; i++){
+					words += " " + json.getJSONArray("results").getJSONObject(i).getString("word");
+				}
 			} catch (Exception e) {
 				Log.e("TipOfYourTongue", e.getMessage());
 			}
 			
-			return result;
+			return words;
 		}
 
 		@Override
