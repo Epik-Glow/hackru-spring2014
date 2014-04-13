@@ -63,9 +63,7 @@ public class MainActivity extends Activity {
 			List<String> results = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			String spokenText = results.get(0);
-			spokenText = spokenText.replaceAll("\\s+","%20")
-					.replaceAll("<strong>", "")
-					.replaceAll("</strong>", "");
+			spokenText = spokenText.replaceAll("\\s+","%20");
 			new ReverseDictionaryTask().execute(spokenText);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -130,7 +128,7 @@ public class MainActivity extends Activity {
 				for(Entry<String, String> entry : result.entrySet()) {
 					Card card = new Card(context);
 					card.setText(entry.getKey());
-					card.setFootnote(entry.getValue());
+					card.setFootnote(entry.getValue().replaceAll("<strong>", "").replaceAll("</strong>", ""));
 					
 					cards.add(card);
 					cardScrollAdapter.notifyDataSetChanged();
