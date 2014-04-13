@@ -41,7 +41,6 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
 		context = this;
 
 		cards = new ArrayList<Card>();
@@ -53,6 +52,8 @@ public class MainActivity extends Activity {
 		// Starts up a speech request
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		startActivityForResult(intent, SPEECH_REQUEST);
+
+		setContentView(cardScrollView);
 	}
 
 	@Override
