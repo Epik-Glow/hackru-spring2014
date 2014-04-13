@@ -1,6 +1,7 @@
 package hackru.tipofyourtongue;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -130,6 +133,31 @@ public class MainActivity extends Activity {
 					Card card = new Card(context);
 					card.setText(entry.getKey());
 					card.setFootnote(entry.getValue().replaceAll("<strong>", "").replaceAll("/strong>", ": "));
+					card.setImageLayout(Card.ImageLayout.FULL);
+					
+					// Random background
+					Random random = new Random();
+					int num = random.nextInt(9);
+					if (num == 0)
+						card.addImage(R.drawable.bg1);
+					else if (num == 1)
+						card.addImage(R.drawable.bg2);
+					else if (num == 2)
+						card.addImage(R.drawable.bg3);
+					else if (num == 3)
+						card.addImage(R.drawable.bg4);
+					else if (num == 4)
+						card.addImage(R.drawable.bg5);
+					else if (num == 5)
+						card.addImage(R.drawable.bg6);
+					else if (num == 6)
+						card.addImage(R.drawable.bg7);
+					else if (num == 7)
+						card.addImage(R.drawable.bg8);
+					else if (num == 8)
+						card.addImage(R.drawable.bg9);
+					else if (num == 9)
+						card.addImage(R.drawable.bg10);
 					
 					cards.add(card);
 					cardScrollAdapter.notifyDataSetChanged();
@@ -137,6 +165,31 @@ public class MainActivity extends Activity {
 			} else {
 				Card card = new Card(context);
 				card.setText("Could not find any words");
+				card.setImageLayout(Card.ImageLayout.FULL);
+				
+				// Random background
+				Random random = new Random();
+				int num = random.nextInt(9);
+				if (num == 0)
+					card.addImage(R.drawable.bg1);
+				else if (num == 1)
+					card.addImage(R.drawable.bg2);
+				else if (num == 2)
+					card.addImage(R.drawable.bg3);
+				else if (num == 3)
+					card.addImage(R.drawable.bg4);
+				else if (num == 4)
+					card.addImage(R.drawable.bg5);
+				else if (num == 5)
+					card.addImage(R.drawable.bg6);
+				else if (num == 6)
+					card.addImage(R.drawable.bg7);
+				else if (num == 7)
+					card.addImage(R.drawable.bg8);
+				else if (num == 8)
+					card.addImage(R.drawable.bg9);
+				else if (num == 9)
+					card.addImage(R.drawable.bg10);
 				
 				cards.add(card);
 				cardScrollAdapter.notifyDataSetChanged();
