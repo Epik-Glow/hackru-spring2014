@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
 			JSONObject json;
 			try {
 				json = readJsonFromUrl("http://api.wordnik.com:80/v4/words.json/reverseDictionary?query="+input[0]+"&minCorpusCount=5&maxCorpusCount=-1&minLength=1&maxLength=-1&includeTags=false&skip=0&limit=10&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5");
-				result = json.toString();
+				result = json.getJSONArray("results").getJSONObject(0).getString("word");
 			} catch (Exception e) {
 				Log.e("TipOfYourTongue", e.getMessage());
 			}
@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
 		@Override
 		protected void onPostExecute(String result) {
 			// Sets the card text
-			card.setText(result);
+			card.setText(result);	// Only gets first result; implement scrolling cards later
 			setContentView(card.toView());
 		}
 		
