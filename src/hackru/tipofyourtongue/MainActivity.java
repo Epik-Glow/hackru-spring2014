@@ -42,10 +42,10 @@ public class MainActivity extends Activity {
             String spokenText = results.get(0);
             
             // Gets the reverse dictionary output
-            TembooSession session;
 			try {
+				
 				// Instantiate the Choreo, using a previously instantiated TembooSession object
-				session = new TembooSession("RichardChu", "Tip Of Your Tongue", "f00de67c02a503b0850080e3e090b9e53bb68fa621377b3dd");
+				TembooSession session = new TembooSession("RichardChu", "Tip Of Your Tongue", "f00de67c02a503b0850080e3e090b9e53bb68fa621377b3dd");
 				ReverseDictionary reverseDictionaryChoreo = new ReverseDictionary(session);
 				
 				// Get an InputSet object for the choreo
@@ -59,10 +59,9 @@ public class MainActivity extends Activity {
 				ReverseDictionaryResultSet reverseDictionaryResults = reverseDictionaryChoreo.execute(reverseDictionaryInputs);
 				
 				// Sets the card text
-				card.setText(reverseDictionaryResults.toString());
+				card.setText(reverseDictionaryResults.get_Response());
 			} catch (TembooException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				card.setText("Doesn't work");
 			}
         }
         super.onActivityResult(requestCode, resultCode, data);
