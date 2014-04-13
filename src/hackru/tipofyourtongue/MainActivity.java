@@ -1,11 +1,20 @@
 package hackru.tipofyourtongue;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
-import com.google.android.glass.app.Card;
-import com.google.android.glass.widget.CardScrollAdapter;
-import com.google.android.glass.widget.CardScrollView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,16 +26,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.nio.charset.Charset;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.android.glass.app.Card;
+import com.google.android.glass.widget.CardScrollAdapter;
+import com.google.android.glass.widget.CardScrollView;
 
 public class MainActivity extends Activity {
 
@@ -39,19 +41,18 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 		context = this;
 
 		cards = new ArrayList<Card>();
 		cardScrollAdapter = new CardScrollViewAdapter();
-		cardScrollView = new CardScrollView(this);
+		cardScrollView = (CardScrollView) findViewById(R.id.card_scroll_view);
 		cardScrollView.setAdapter(cardScrollAdapter);
 		cardScrollView.activate();
 
 		// Starts up a speech request
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		startActivityForResult(intent, SPEECH_REQUEST);
-
-		setContentView(cardScrollView);
 	}
 
 	@Override
@@ -61,7 +62,9 @@ public class MainActivity extends Activity {
 			List<String> results = data
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			String spokenText = results.get(0);
-			spokenText = spokenText.replaceAll("\\s+","%20");
+			spokenText = spokenText.replaceAll("\\s+","%20")
+					.replaceAll("<strong>", "")
+					.replaceAll("</strong>", "");
 			new ReverseDictionaryTask().execute(spokenText);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
@@ -96,18 +99,21 @@ public class MainActivity extends Activity {
 		
 	}
 
-	private class ReverseDictionaryTask extends AsyncTask<String, Void, ArrayList<String>> {
+	private class ReverseDictionaryTask extends AsyncTask<String, Void, HashMap<String, String>> {
 
 		@Override
-		protected ArrayList<String> doInBackground(String... input) {
-			ArrayList<String> words = new ArrayList<String>();
+		protected HashMap<String, String> doInBackground(String... input) {
+			LinkedHashMap<String, String> words = new LinkedHashMap<String, String>();
 			JSONObject json;
 			try {
 				json = readJsonFromUrl("http://api.wordnik.com:80/v4/words.json/reverseDictionary?query="+input[0]+"&minCorpusCount=5&maxCorpusCount=-1&minLength=1&maxLength=-1&includeTags=false&skip=0&limit=10&api_key=a2a73e7b926c924fad7001ca3111acd55af2ffabf50eb4ae5");
 				
 				int numOfResults = json.getInt("totalResults");
 				for (int i = 0; i < numOfResults; i++){
-					words.add(json.getJSONArray("results").getJSONObject(i).getString("word"));
+					words.put(
+						json.getJSONArray("results").getJSONObject(i).getString("word"),
+						json.getJSONArray("results").getJSONObject(i).getString("text")
+					);
 				}
 			} catch (Exception e) {
 				Log.e("TipOfYourTongue", e.getMessage());
@@ -117,14 +123,24 @@ public class MainActivity extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(ArrayList<String> result) {
+		protected void onPostExecute(HashMap<String, String> result) {
 			// Sets the card text
-			for(String word : result) {
+			if(result.entrySet().size() > 0) {
+				for(Entry<String, String> entry : result.entrySet()) {
+					Card card = new Card(context);
+					card.setText(entry.getKey());
+					card.setFootnote(entry.getValue());
+					
+					cards.add(card);
+					cardScrollAdapter.notifyDataSetChanged();
+				}
+			} else {
 				Card card = new Card(context);
-				card.setText(word);
+				card.setText("Could not find any words");
+				
 				cards.add(card);
+				cardScrollAdapter.notifyDataSetChanged();
 			}
-			cardScrollAdapter.notifyDataSetChanged();
 		}
 		
 		private String readAll(Reader rd) throws IOException {
